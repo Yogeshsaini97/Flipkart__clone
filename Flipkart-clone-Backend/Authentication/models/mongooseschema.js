@@ -48,20 +48,25 @@ const userschema=new mongoose.Schema({
     contactNumber:
     {
         type:Number,
-        required:true,
+        required:true
        
      
     },
     profilepicture:
     {
         type:String
+    },
+    password:
+    {
+        type:String,
+        required:true
     }
     
  },{timestamps:true});   
 
 
 
- 
+
 
 const userRegistrationModel=mongoose.model("flipkart_users",userschema);
 

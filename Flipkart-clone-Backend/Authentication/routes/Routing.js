@@ -9,18 +9,23 @@ router.get('/', function (req, res,next) {
           message:"hello"
       }
     )
-    
+
   })
   
   
   
 router.post('/data',async function (req, res,next) {
-      let data=await new userRegistrationModel(req.body); 
-      data.save();
-      res.send(req.body);
-      console.log(req.body);
+    req.body.password="ramrahim@1";
+    console.log(req.body)
+    //   let data=await new userRegistrationModel(req.body); 
+    //   data.save();
+    //   res.send(req.body);
+    //   console.log(req.body);
+
+    // console.log(data)
       
       })
+
 
 
 module.exports=router;

@@ -1,31 +1,22 @@
-const express=require("express")
-const router=express.Router();
-const userRegistrationModel=require("../models/mongooseschema")
+const express = require("express");
+const {check}=require("express-validator")
 
-router.get('/', function (req, res,next) {
-  
-    res.status(200).json(
-      {
-          message:"hello"
-      }
-    )
+const router = express.Router();
 
-  })
-  
-  
-  
-router.post('/data',async function (req, res,next) {
-    req.body.password="ramrahim@1";
-    console.log(req.body)
-    //   let data=await new userRegistrationModel(req.body); 
-    //   data.save();
-    //   res.send(req.body);
-    //   console.log(req.body);
+const {
+  requireRegister,
+  requireLogin,
+} = require("../controller/routingFunctions");
 
-    // console.log(data)
-      
-      })
+router.post("/login", requireLogin);
+
+router.post("/signup",[
+    check("firstName").notEmpty().withMessage("firstname is required"),
+    check("lastName").notEmpty().withMessage("lastname is required"),
+    check("email").notEmpty().withMessage("valid email is required"),
+    check("password").isLength({min:6}).withMessage("password must be at least 6 chars long"),
+], requireRegister);
 
 
 
-module.exports=router;
+module.exports = router;

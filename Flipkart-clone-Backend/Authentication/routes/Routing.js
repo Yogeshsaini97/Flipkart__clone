@@ -3,10 +3,7 @@ const {check}=require("express-validator")
 
 const router = express.Router();
 
-const {
-  requireRegister,
-  requireLogin,
-} = require("../controller/routingFunctions");
+const {requireRegister,requireLogin,} = require("../controller/routingFunctions");
 
 router.post("/login", requireLogin);
 

@@ -2,8 +2,40 @@ const express=require("express")
 const router=express.Router();
 const mongoose = require("mongoose");
 const slugify=require("slugify")
+var jwt = require('jsonwebtoken');
+const userRegistrationModel = require("../models/mongooseschema");
+const {requiresignin}=require("./Requiresignin")
+
+const filtercagtegories=(cat,parentId=null)=>
+{
+const categoryList=[];
+let categoryji;
+if(parentId==null)
+{
+    categoryji=cat.filter(cat=>cat.parentId==undefined);
+
+}
+
+else{
+    categoryji=cat.filter(cat=>cat.parentId==parentId);
+}
+
+for(let loop of categoryji)
+{
+    categoryList.push({
+        _id:loop._id,
+        name:loop.name,
+        slug:loop.slug,
+        children:filtercagtegories(cat,loop._id)
+    })
+    
+}
 
 
+return categoryList;
+
+
+}
 
 
 const CategorySchema = new mongoose.Schema(
@@ -19,7 +51,7 @@ const CategorySchema = new mongoose.Schema(
         unique: true
       },
       parentId: {
-     type:Number
+     type:String
      
       }
     },
@@ -31,11 +63,31 @@ const CategorySchema = new mongoose.Schema(
  const categorymodel=mongoose.model("flipkart_categories",CategorySchema);
 
 
+//  const requiresignin=async (req,res,next)=>
+// {
+//     if(req.headers.authorization)
+//     {
+//         const token=req.headers.authorization;
+//         const userid=jwt.verify(token,"yogesh");
+
+//       console.log(userid)
+//       if(userid.role=="user")
+//       {
+//         res.status(400).json({message:"user role does,nt have authority to create categopries"});
+//         return;
+//       }
+//         next();
+//         return;
+//     }
+//     return res.status(400).send({message:"please provide auth token in headers"})
+   
+// }
 
 
 
 
-router.post("/category/create",(req,res)=>
+
+router.post("/category/create",requiresignin,(req,res)=>
 {
 
     const categoryobj={
@@ -63,11 +115,6 @@ router.post("/category/create",(req,res)=>
 
 });
 
-const requiresignin=(req,res,next)=>
-{
-    const token=req.headers.authorization.split(" ")[1];
-    const user=jwt.verify(token,)
-}
 
 
 
@@ -75,15 +122,16 @@ router.get("/category/getallcategories",async (req,res)=>
 {
 
    let data= await categorymodel.find();
+   
    if(data.length==0)
    {
    
     res.status(200).json({message:"there are no categories in database"})
     return;
    }
-
+   const filteredcategories=filtercagtegories(data);
    
-   res.status(200).json({message:"all categories",categories:data});
+   res.status(200).json({message:"all categories",categories:filteredcategories});
    return;
 
 });

@@ -49,7 +49,7 @@ exports.requireLogin = async function (req, res, next) {
   if (data) {
     bcrypt.compare(req.body.password, data.password, function (err, result) {
       if (result) {
-        var token = jwt.sign({ id: data._id }, 'yogesh',{expiresIn:"1h"});
+        var token = jwt.sign({ id: data._id,role:data.role }, 'yogesh',{expiresIn:"1h"});
         console.log("token"+ token)
         res.status(200).json({token:token, message: "Perfect" });
         return;

@@ -5,6 +5,7 @@ const mongodbconnect = require("./Authentication/controller/mongodbconnect");
 const userRouter = require("./Authentication/routes/Routing");
 const adminRouter = require("./Authentication/routes/adminRouting");
 const category=require("./Authentication/routes/Category")
+const product=require("./Authentication/routes/product")
 
 const mongoose = require("mongoose");
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use("/flipkart/user", userRouter);
 app.use("/flipkart/admin", adminRouter);
 app.use("/flipkart", category);
+app.use("/flipkart", product);
 
 
 app.listen(5000, () => {

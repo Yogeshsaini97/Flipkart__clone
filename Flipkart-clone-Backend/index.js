@@ -5,7 +5,7 @@ const mongodbconnect = require("./Authentication/controller/mongodbconnect");
 const userRouter = require("./Authentication/routes/Routing");
 const adminRouter = require("./Authentication/routes/adminRouting");
 const category=require("./Authentication/routes/Category")
-const product=require("./Authentication/routes/product")
+const product=require("./Authentication/routes/Product")
 
 const mongoose = require("mongoose");
 
@@ -24,4 +24,4 @@ app.use("/flipkart", product);
 
 app.listen(5000, () => {
   console.log("server is running");
-})
+});

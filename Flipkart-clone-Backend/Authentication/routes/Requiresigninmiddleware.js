@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 
 
 
-exports.requiresignin=async (req,res,next)=>
+exports.requiresigninanduserchecking=async (req,res,next)=>
 {
     if(req.headers.authorization)
     {

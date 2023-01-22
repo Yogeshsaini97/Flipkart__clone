@@ -5,6 +5,12 @@ const slugify=require("slugify")
 var jwt = require('jsonwebtoken');
 const userRegistrationModel = require("../models/mongooseschema");
 const {requiresigninandusercheckingforadmin}=require("./Requiresigninmiddlewareforadmin")
+const multer=require("multer");
+const shortid=require("shortid");
+const path=require("path");
+
+
+ 
 
 const filtercagtegories=(cat,parentId=null)=>
 {
@@ -50,6 +56,8 @@ const CategorySchema = new mongoose.Schema(
         required: true,
         unique: true
       },
+      categoryImage:{type:String
+      },
       parentId: {
      type:String
      
@@ -63,31 +71,25 @@ const CategorySchema = new mongoose.Schema(
  const categorymodel=mongoose.model("flipkart_categories",CategorySchema);
 
 
-//  const requiresignin=async (req,res,next)=>
-// {
-//     if(req.headers.authorization)
-//     {
-//         const token=req.headers.authorization;
-//         const userid=jwt.verify(token,"yogesh");
-
-//       console.log(userid)
-//       if(userid.role=="user")
-//       {
-//         res.status(400).json({message:"user role does,nt have authority to create categopries"});
-//         return;
-//       }
-//         next();
-//         return;
-//     }
-//     return res.status(400).send({message:"please provide auth token in headers"})
-   
-// }
 
 
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null,path.join(path.dirname(__dirname),"/uploads"))
+  },
+  filename: function (req, file, cb) {
+
+    cb(null, shortid.generate() + "-" + file.originalname )
+  }
+})
 
 
-router.post("/category/create",requiresigninandusercheckingforadmin,(req,res)=>
+const upload=multer({storage})
+
+
+
+router.post("/category/create",requiresigninandusercheckingforadmin,upload.single("categoryImage"),(req,res)=>
 {
 
     const categoryobj={
@@ -99,6 +101,10 @@ router.post("/category/create",requiresigninandusercheckingforadmin,(req,res)=>
     if(req.body.parentId)
     {
         categoryobj.parentId=req.body.parentId;
+    }
+    if(req.file)
+    {
+      categoryobj.categoryImage="http://localhost:5000/public/"+req.file.filename
     }
 
     console.log(categoryobj)

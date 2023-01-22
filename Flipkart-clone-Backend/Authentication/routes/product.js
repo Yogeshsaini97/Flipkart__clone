@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const slugify=require("slugify")
 var jwt = require('jsonwebtoken');
 const userRegistrationModel = require("../models/mongooseschema");
-const {requiresigninanduserchecking}=require("./Requiresigninmiddleware")
+const {requiresigninandusercheckingforadmin}=require("./Requiresigninmiddlewareforadmin")
 const multer=require("multer");
 const shortid=require("shortid");
 const path=require("path");
@@ -91,7 +91,7 @@ category:{type:mongoose.Schema.Types.ObjectId,ref:"flipkart_categories"}
 
 
 
- router.post("/Product/create",requiresigninanduserchecking,upload.array("productPicture"), async(req,res)=>
+ router.post("/Product/create",requiresigninandusercheckingforadmin,upload.array("productPicture"), async(req,res)=>
  {
  
     //  res.status(200).json({file:req.files,body:req.body})

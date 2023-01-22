@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const slugify=require("slugify")
 var jwt = require('jsonwebtoken');
 const userRegistrationModel = require("../models/mongooseschema");
-const {requiresigninanduserchecking}=require("./Requiresigninmiddleware")
+const {requiresigninandusercheckingforadmin}=require("./Requiresigninmiddlewareforadmin")
 
 const filtercagtegories=(cat,parentId=null)=>
 {
@@ -87,7 +87,7 @@ const CategorySchema = new mongoose.Schema(
 
 
 
-router.post("/category/create",requiresigninanduserchecking,(req,res)=>
+router.post("/category/create",requiresigninandusercheckingforadmin,(req,res)=>
 {
 
     const categoryobj={
@@ -118,7 +118,7 @@ router.post("/category/create",requiresigninanduserchecking,(req,res)=>
 
 
 
-router.get("/category/getallcategories",requiresigninanduserchecking,async (req,res)=>
+router.get("/category/getallcategories",requiresigninandusercheckingforadmin,async (req,res)=>
 {
 
    let data= await categorymodel.find();

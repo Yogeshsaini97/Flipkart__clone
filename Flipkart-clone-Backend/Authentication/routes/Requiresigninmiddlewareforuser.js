@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 
 
 
-exports.requiresigninanduserchecking=async (req,res,next)=>
+exports.requiresigninandusercheckingforuser=async (req,res,next)=>
 {
     if(req.headers.authorization)
     {
@@ -10,9 +10,9 @@ exports.requiresigninanduserchecking=async (req,res,next)=>
         const userid=jwt.verify(token,"yogesh");
 
       console.log(userid)
-      if(userid.role=="user")
+      if(userid.role=="admin")
       {
-        res.status(400).json({message:"user role does,nt have authority to create categopries"});
+        res.status(400).json({message:"admin role does,nt have authority "});
         return;
       }
         next();

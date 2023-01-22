@@ -6,6 +6,7 @@ const userRouter = require("./Authentication/routes/Routing");
 const adminRouter = require("./Authentication/routes/adminRouting");
 const category=require("./Authentication/routes/Category")
 const product=require("./Authentication/routes/Product")
+const cart=require("./Authentication/routes/Addintocart")
 
 const mongoose = require("mongoose");
 
@@ -20,6 +21,7 @@ app.use("/flipkart/user", userRouter);
 app.use("/flipkart/admin", adminRouter);
 app.use("/flipkart", category);
 app.use("/flipkart", product);
+app.use("/flipkart", cart);
 
 
 app.listen(5000, () => {
